@@ -2,7 +2,11 @@ import {Router} from 'express';
 
 import {postBeeper} from '../controllers/postcontroller';
 
-const router:Router = Router();
+const postRouter:Router = Router();
 
-router.post('', postBeeper);
+// postRouter.post('/', postBeeper
+
+//  );
+
+export default postRouter;
 
