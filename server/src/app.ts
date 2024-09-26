@@ -8,19 +8,23 @@ import postRouter from "./Routers/postRouter";
 
 import getRouter from "./Routers/getRouter"
 
+import deleteRouter from "./Routers/deleteRouter";
+
+import putRouter from "./Routers/putRouter";
+
 app.use(express.json());
 
 app.use('/api/beepers', postRouter);
 
 app.use('/api/beepers', getRouter);
 
-app.use('/api/beepers/:id', getRouter);
+app.use('/api/beepers', getRouter);
 
-// app.use('/api/beepers/:id', );
+app.use('/api/beepers', getRouter);
 
-// app.use('/api/beepers/:id/status',);
+app.use('/api/beepers', putRouter);
 
-// app.use('/api/beepers/:id',);
+app.use('/api/beepers', deleteRouter);
 
 // app.use('/api/beepers/status/:status', getRouter);
 

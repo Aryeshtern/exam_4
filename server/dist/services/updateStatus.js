@@ -1,13 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const statuses = ["manufactured", "assembled", ".shipped", "deployed", "detonated"];
-
-const changeStatus = (status: string):string | null =>
-{
+const changeStatus = (status) => {
     const currentIndex = statuses.indexOf(status);
     if (currentIndex === statuses.length - 1) {
         return null;
-    } else {
+    }
+    else {
         return statuses[currentIndex + 1];
     }
-}
-
-export default changeStatus;
+};
+exports.default = changeStatus;

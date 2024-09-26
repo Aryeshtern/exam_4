@@ -1,6 +1,6 @@
 
 export interface Beeper{
-    id?:Number;
+    id:Number;
     name?:string;
     status?:string;
     create_at?:Date;

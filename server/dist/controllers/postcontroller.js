@@ -9,23 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signIn = exports.postBeeper = void 0;
+exports.postBeeper = void 0;
 const dataManipu_1 = require("../dal/dataManipu");
 const postBeeper = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        let beeperDetailes = req.body;
         const beeper = {
-            name: "beeper",
-            status: "asdgggsadg",
+            id: 0,
+            name: beeperDetailes.name,
+            status: "manufactured",
             create_at: new Date(),
             detonated_at: undefined,
-            latitude: undefined,
-            longitude: undefined,
+            latitude: 0,
+            longitude: 0,
         };
         if (!beeper.name) {
             return res.status(400).json({ message: "Missing required fields" });
         }
         const createdBeeper = yield (0, dataManipu_1.createBeeper)(beeper);
         if (!createdBeeper) {
+            console.log("Beeper creation failed");
             return res.status(500).json({ message: "Error creating beeper" });
         }
         return res.status(201).json(createdBeeper);
@@ -36,8 +39,3 @@ const postBeeper = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.postBeeper = postBeeper;
-const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userInfo = req.body;
-    return res.json({ userId: 9 });
-});
-exports.signIn = signIn;

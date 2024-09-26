@@ -1,16 +1,21 @@
 import {Beeper} from "../Models/Beeper"
 import jsonfile from "jsonfile"
-import changeStatus from "../services/updateStatus";
 
 const dataPath = 'src/db/data.json';
 export const createBeeper = async (newBeeper:Beeper) : Promise<Beeper | null>=>{
     try{
         let data = await jsonfile.readFile(dataPath);
-        newBeeper.id = data[data.length - 1].id + 1;
-        data.push(newBeeper);
+        console.log(data);
+        if(data.beepers.length < 1){
+            newBeeper.id = 1;
+        }else{
+            newBeeper.id = data.beepers[data.beepers.length - 1].id + 1;
+        }
+        data.beepers.push(newBeeper);
         await jsonfile.writeFile(dataPath, data);
         return newBeeper;
-    }catch{
+    }catch(err){
+        console.error(err);
         return null;
     }
 }
@@ -18,7 +23,7 @@ export const createBeeper = async (newBeeper:Beeper) : Promise<Beeper | null>=>{
 export const getAllBeepers = async () : Promise<Beeper[] | null>=>{
     try{
         let data = await jsonfile.readFile(dataPath);
-        return data;
+        return data.beepers;
     }catch{
         return null;
     }
@@ -26,30 +31,29 @@ export const getAllBeepers = async () : Promise<Beeper[] | null>=>{
 
 export const getBeeperById = async (id:number) : Promise<Beeper | undefined>=>{
     try{
-        let data:Beeper[] = await jsonfile.readFile(dataPath);
-        return data.find(b=>b.id === id);
+        let data = await jsonfile.readFile(dataPath);
+        let listData:Beeper[] = data.beepers
+        return listData.find(b=>b.id === id);
     }catch{
         return undefined;
-    }
-}
-
-export const getByStatus = async (status:string) => {
-    try{
-        let data:Beeper[] = await jsonfile.readFile(dataPath);
-        return data.filter(b=>b.status === status);
-    }catch{
-        return [];
     }
 }
 
 
 export const updateStatusOfBeeper = async (beeperId: Number, status:string) => {
     try{
-        let data:Beeper[] = await jsonfile.readFile(dataPath);
-        let beeperIndex = data.findIndex(b=>b.id === beeperId);
+        let data = await jsonfile.readFile(dataPath);
+        let listData:Beeper[] = data.beepers
+        let beeperIndex = listData.findIndex(b=>b.id === beeperId);
         if(beeperIndex !== -1){
-            data[beeperIndex].status = changeStatus(status) || data[beeperIndex].status;
+            listData[beeperIndex].status = status
             await jsonfile.writeFile(dataPath, data);
+            if(status === 'shipped'){
+                setTimeout(() => {
+                    listData[beeperIndex].status = "detonated";
+                    jsonfile.writeFile(dataPath, data);
+                }, 10000);
+            }
             return true;
         }
         return null;
@@ -68,18 +72,19 @@ export const updateBeeperLocation = async (beeperId: Number, latitude: Number, l
             await jsonfile.writeFile(dataPath, data);
             return true;
         }
-        return null;
+        return false;
     }catch{
-        return null
+        return false;
     }
 }
 
 export const deleteBeeper = async (beeperId: Number) => {
     try{
-        let data:Beeper[] = await jsonfile.readFile(dataPath);
-        let beeperIndex = data.findIndex(b=>b.id === beeperId);
+        let data = await jsonfile.readFile(dataPath);
+        let beepers:Beeper[] = data.beepers;
+        let beeperIndex = beepers.findIndex(b=>b.id === beeperId);
         if(beeperIndex!== -1){
-            data.splice(beeperIndex, 1);
+            beepers.splice(beeperIndex, 1);
             await jsonfile.writeFile(dataPath, data);
             return true;
         }
