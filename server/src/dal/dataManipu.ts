@@ -52,6 +52,7 @@ export const updateStatusOfBeeper = async (beeperId: Number, status:string) => {
                 setTimeout(() => {
                     listData[beeperIndex].status = "detonated";
                     jsonfile.writeFile(dataPath, data);
+                    console.log(`Beeper ${beeperId} has been detonated!`);
                 }, 10000);
             }
             return true;

@@ -68,6 +68,7 @@ const updateStatusOfBeeper = (beeperId, status) => __awaiter(void 0, void 0, voi
                 setTimeout(() => {
                     listData[beeperIndex].status = "detonated";
                     jsonfile_1.default.writeFile(dataPath, data);
+                    console.log(`Beeper ${beeperId} has been detonated!`);
                 }, 10000);
             }
             return true;

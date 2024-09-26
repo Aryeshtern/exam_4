@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateBeeper = void 0;
 const validateLocation_1 = require("../services/validateLocation");
+const validateStatus_1 = require("../services/validateStatus");
 const dataManipu_1 = require("../dal/dataManipu");
 const updateBeeper = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -18,6 +19,9 @@ const updateBeeper = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const status = req.body.status;
         if (!beeperId || !status) {
             return res.status(400).json({ message: "Missing beeperId or status" });
+        }
+        if (!validateStatus_1.isValidStatus) {
+            return res.status(400).json({ message: "Invalid status" });
         }
         if (status === "shipped") {
             if (!validateLocation_1.isValidLocation) {
